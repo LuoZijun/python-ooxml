@@ -251,8 +251,133 @@ def serialize_math(ctx, document, elem, root):
     """Serialize math element.
 
     Math objects are not supported at the moment. This is wht we only show error message.
+    math emement:
+    
+    <m:oMathPara>
+        <m:oMath>
+            <m:r>
+                <w:rPr><w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/></w:rPr>
+                <m:t>x</m:t>
+            </m:r>
+            <m:r>
+                <m:rPr><m:sty m:val="p"/></m:rPr>
+                <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                </w:rPr>
+                <m:t>=</m:t>
+            </m:r>
+            <m:f>
+                <m:fPr>
+                    <m:ctrlPr>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/>
+                        </w:rPr>
+                    </m:ctrlPr>
+                </m:fPr>
+                <m:num>
+                    <m:r>
+                        <m:rPr>
+                            <m:sty m:val="p"/>
+                        </m:rPr>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                        </w:rPr>
+                        <m:t>-</m:t>
+                    </m:r>
+                    <m:r>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                        </w:rPr>
+                        <m:t>b</m:t>
+                    </m:r>
+                    <m:r>
+                        <m:rPr>
+                            <m:sty m:val="p"/>
+                        </m:rPr>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                        </w:rPr>
+                        <m:t>±</m:t>
+                    </m:r>
+                    <m:rad>
+                        <m:radPr>
+                            <m:degHide m:val="1"/>
+                            <m:ctrlPr>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/>
+                                </w:rPr>
+                            </m:ctrlPr>
+                        </m:radPr>
+                        <m:deg/>
+                        <m:e>
+                            <m:sSup>
+                                <m:sSupPr>
+                                    <m:ctrlPr>
+                                        <w:rPr>
+                                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math"/>
+                                        </w:rPr>
+                                    </m:ctrlPr>
+                                </m:sSupPr>
+                                <m:e>
+                                    <m:r>
+                                        <w:rPr>
+                                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                                        </w:rPr>
+                                        <m:t>b</m:t>
+                                    </m:r>
+                                </m:e>
+                                <m:sup>
+                                    <m:r>
+                                        <m:rPr>
+                                            <m:sty m:val="p"/>
+                                        </m:rPr>
+                                        <w:rPr>
+                                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                                        </w:rPr>
+                                        <m:t>2</m:t>
+                                    </m:r>
+                                </m:sup>
+                            </m:sSup>
+                            <m:r>
+                                <m:rPr>
+                                    <m:sty m:val="p"/>
+                                </m:rPr>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                                </w:rPr>
+                                <m:t>-4</m:t>
+                            </m:r>
+                            <m:r>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                                </w:rPr>
+                                <m:t>ac</m:t>
+                            </m:r>
+                        </m:e>
+                    </m:rad>
+                </m:num>
+                <m:den>
+                    <m:r>
+                        <m:rPr><m:sty m:val="p"/></m:rPr>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                        </w:rPr>
+                        <m:t>2</m:t>
+                    </m:r>
+                    <m:r>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:eastAsia="Cambria Math" w:hAnsi="Cambria Math" w:cs="Cambria Math"/>
+                        </w:rPr>
+                        <m:t>a</m:t>
+                    </m:r>
+                </m:den>
+            </m:f>
+        </m:oMath>
+    </m:oMathPara>
+    
     """
-    #print ":: serialize math elements."
+    
+    print ":: serialize math elements."
     #print etree.tostring(elem, pretty_print=True, encoding="utf-8", xml_declaration=False)
     _div = etree.SubElement(root, 'span')
     if ctx.options['embed_styles']:

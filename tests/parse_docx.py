@@ -15,7 +15,7 @@ from ooxml import parse, serialize, importer
 logging.basicConfig(filename='ooxml.log', level=logging.INFO)
 
 
-file_name = 'tests/files/MS-2010-Math.docx'
+file_name = 'tests/files/MS-2007.docx'
 
 dfile = ooxml.read_from_file(file_name)
 

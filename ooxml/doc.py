@@ -466,11 +466,10 @@ class Math(Element):
 
     Math elements are not supported at the moment. We just parse them and create empty element."""
 
-    def __init__(self):
-        pass
-
+    def __init__(self, omml=''):
+        self.omml = omml
     def value(self):
-        return ''
+        return self.omml
 
 
 class SmartTag(Element):

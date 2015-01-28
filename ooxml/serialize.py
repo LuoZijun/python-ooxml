@@ -376,16 +376,17 @@ def serialize_math(ctx, document, elem, root):
     </m:oMathPara>
     
     """
-    
-    print ":: serialize math elements."
+    omml = elem.omml
     #print etree.tostring(elem, pretty_print=True, encoding="utf-8", xml_declaration=False)
     _div = etree.SubElement(root, 'span')
     if ctx.options['embed_styles']:
         _div.set('style', 'border: 1px solid red')
+        _div.set('data-omml', omml)
     _div.text = 'We do not support Math blocks at the moment.'
-    
+    # <div class="omml" style="display:none;">%s</div>
+    #_omml = etree.SubElement(_div, 'span')
+    #_omml.set('style', 'display: none')
     fire_hooks(ctx, document, elem, _div, ctx.get_hook('math'))
-
     return root
 
 def serialize_link(ctx, document, elem, root):

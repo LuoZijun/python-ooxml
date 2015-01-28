@@ -355,7 +355,10 @@ def parse_paragraph(document, par):
             parse_text(document, paragraph, elem)      
 
         if elem.tag == _name('{{{m}}}oMath'):
-            _m = doc.Math()
+            omml = etree.tostring(elem)
+            #sons = elem.getchildren()
+            #print sons
+            _m = doc.Math(omml)
             paragraph.elements.append(_m)
 
         if elem.tag == _name('{{{m}}}oMathPara'):

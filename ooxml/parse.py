@@ -173,6 +173,33 @@ def parse_paragraph_properties(doc, paragraph, prop):
     if rpr is not None:
         parse_previous_properties(doc, paragraph, rpr)
 
+def parse_pict(document, container, elem):
+    """Parse pict element
+    Fix KingSoft.
+    """
+    #<v:imagedata gain="65536f" blacklevel="0f" gamma="0" o:title="" r:id="rId5"/>
+    # <v:shape id="图片 2" o:spid="_x0000_s1026" type="#_x0000_t75" 
+    # style="height:233.25pt;width:414.85pt;rotation:0f;" o:ole="f" fillcolor="#FFFFFF" 
+    # filled="f" o:preferrelative="t" stroked="f" coordorigin="0,0" coordsize="21600,21600">
+    
+    imagedata = elem.xpath('.//v:imagedata', namespaces=NAMESPACES)[0]
+    imagestyle_elem = elem.xpath('.//v:shape', namespaces=NAMESPACES)[0]
+    image_name = imagestyle_elem.attrib[_name('id')] # Chinese
+    image_style = imagestyle_elem.attrib[_name('style')] # Style for picture.
+
+    _rid =  imagedata.attrib[_name('{{{r}}}id')]
+    img = doc.Image(_rid, image_style)
+    container.elements.append(img)
+
+def parse_object(document, container, elem):
+    """Parse object element
+    Fix KingSoft.
+    """
+    #<v:imagedata gain="65536f" blacklevel="0f" gamma="0" o:title="" r:id="rId5"/>
+    imagedata = elem.xpath('.//v:imagedata', namespaces=NAMESPACES)[0]        
+    _rid =  imagedata.attrib[_name('{{{r}}}id')]
+    img = doc.Image(_rid)
+    container.elements.append(img)
 
 def parse_drawing(document, container, elem):
     """Parse drawing element.
@@ -182,7 +209,7 @@ def parse_drawing(document, container, elem):
 
     blip = elem.xpath('.//a:blip', namespaces=NAMESPACES)[0]        
     _rid =  blip.attrib[_name('{{{r}}}embed')]
-
+    
     img = doc.Image(_rid)
     container.elements.append(img)
 
@@ -280,7 +307,15 @@ def parse_text(document, container, element):
 
     if image is not None:
         parse_drawing(document, container, image)
-
+    
+    k_image = element.find(_name('{{{w}}}pict'))
+    if k_image is not None:
+        parse_pict(document, container, k_image)
+    
+    
+    k_object = element.find(_name('{{{w}}}object'))
+    if k_object is not None:
+        parse_object(document, container, k_object)
     return
 
 
@@ -469,7 +504,6 @@ def parse_relationship(document, xmlcontent):
 
     Relationships are placed in file '_rels/document.xml.rels'.
     """
-
     doc = etree.fromstring(xmlcontent)
 
     for elem in doc:
@@ -477,7 +511,6 @@ def parse_relationship(document, xmlcontent):
             rel = {'target': elem.attrib['Target'],
                    'type': elem.attrib['Type'],
                    'target_mode': elem.attrib.get('TargetMode', 'Internal')}
-
             document.relationships[elem.attrib['Id']] = rel
 
 
@@ -486,9 +519,7 @@ def parse_style(document, xmlcontent):
 
     Styles are defined in file 'styles.xml'.
     """
-
     styles = etree.fromstring(xmlcontent)
-
     # parse default styles
     default_rpr = styles.find(_name('{{{w}}}rPrDefault'))
 

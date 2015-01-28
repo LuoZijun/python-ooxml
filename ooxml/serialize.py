@@ -33,8 +33,7 @@ import six
 import collections
 
 from lxml import etree
-from . import doc
-
+from . import doc, NAMESPACES
 
 ###############################################################################
 ## TEMP FUNCTIONS
@@ -243,7 +242,6 @@ def serialize_break(ctx, document, elem, root):
         _div = etree.SubElement(root, 'span')
         if ctx.options['embed_styles']:
             _div.set('style', 'page-break-after: always;')
-
     fire_hooks(ctx, document, elem, _div, ctx.get_hook('page_break'))
 
     return root
@@ -254,12 +252,13 @@ def serialize_math(ctx, document, elem, root):
 
     Math objects are not supported at the moment. This is wht we only show error message.
     """
-
+    #print ":: serialize math elements."
+    #print etree.tostring(elem, pretty_print=True, encoding="utf-8", xml_declaration=False)
     _div = etree.SubElement(root, 'span')
     if ctx.options['embed_styles']:
         _div.set('style', 'border: 1px solid red')
     _div.text = 'We do not support Math blocks at the moment.'
-
+    
     fire_hooks(ctx, document, elem, _div, ctx.get_hook('math'))
 
     return root
@@ -269,31 +268,22 @@ def serialize_link(ctx, document, elem, root):
 
     This works only for external links at the moment.
     """
-
     _a = etree.SubElement(root, 'a')
-
     for el in elem.elements:
         _ser = ctx.get_serializer(el)
-
         if _ser:
             _td = _ser(ctx, document, el, _a)
         else:
             if isinstance(el, doc.Text):
                 children = list(_a)
-
                 if len(children) == 0:
                     _text = _a.text or u''
-
                     _a.text = u'{}{}'.format(_text, el.value())
                 else:
                     _text = children[-1].tail or u''
-
                     children[-1].tail = u'{}{}'.format(_text, el.value())
-
     _a.set('href', document.relationships[elem.rid]['target'])
-
     fire_hooks(ctx, document, elem, _a, ctx.get_hook('a'))
-
     return root
 
 
@@ -302,17 +292,16 @@ def serialize_image(ctx, document, elem, root):
 
     This is not abstract enough.
     """
-
     img_src = document.relationships[elem.rid]['target']
-
+    img_style = elem.style
     img_name, img_extension = os.path.splitext(img_src)
-
     _img = etree.SubElement(root, 'img')
+    #print dir(_img)
     # make path configurable
-    _img.set('src', 'static/{}{}'.format(elem.rid, img_extension))
-
+    #_img.set('src', 'static/{}{}'.format(elem.rid, img_extension))
+    _img.set('src', 'static/{}{}'.format(img_name, img_extension))
+    _img.set('style', img_style)
     fire_hooks(ctx, document, elem, _img, ctx.get_hook('img'))
-
     return root
 
 
@@ -1068,7 +1057,6 @@ class Context:
         :Returns:
           Returns reference to a function which will be used for serialization.
         """
-
         return self.options['serializers'].get(type(node), None)
 
         if type(node) in self.options['serializers']:
@@ -1181,16 +1169,15 @@ def serialize_elements(document, elements, options=None):
     ctx = Context(document, options)
 
     tree_root = root = etree.Element('div')
-
     for elem in elements:
         _ser = ctx.get_serializer(elem)
-
+        
         if _ser:
             root = _ser(ctx, document, elem, root)
-
+        else:
+            logger.info('Serialize element %s now , get_serializer fail.', str(elem) )
     # TODO:
     # - create footnotes now
-
     return etree.tostring(tree_root, pretty_print=True, encoding="utf-8", xml_declaration=False)
 
 

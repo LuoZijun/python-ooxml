@@ -252,11 +252,10 @@ class Link(Element):
 class Image(Element):
     "Represent image element."
 
-    def __init__(self, rid):
+    def __init__(self, rid, style=''):
         super(Image, self).__init__()
-
         self.rid = rid
-
+        self.style = style
     def value(self):
         return self.rid
 

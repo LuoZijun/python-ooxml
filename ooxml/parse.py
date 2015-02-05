@@ -355,9 +355,9 @@ def parse_paragraph(document, par):
             parse_text(document, paragraph, elem)      
 
         if elem.tag == _name('{{{m}}}oMath'):
-            omml = etree.tostring(elem)
-            #sons = elem.getchildren()
-            #print sons
+            # method: xml/html/text 
+            # default: method = 'xml'
+            omml = etree.tostring(elem, method='xml')
             _m = doc.Math(omml)
             paragraph.elements.append(_m)
 

@@ -15,14 +15,17 @@ from ooxml import parse, serialize, importer
 logging.basicConfig(filename='ooxml.log', level=logging.INFO)
 
 
-file_name = 'tests/files/MS-2007.docx'
+#file_name = 'tests/files/MS-2007.docx'
+#file_name = 'tests/files/MS-2010.docx'
+#file_name = 'tests/files/kingsoft.docx'
+file_name = 'tests/files/paper.docx'
 
 dfile = ooxml.read_from_file(file_name)
 
 html = """<!DOCTYPE html>
 <html lang='zh_CN'>
     <head>
-        <title>hehe</title>
+        <title>呵呵</title>
         <meta charset="UTF-8">
     </head>
     <body>\n
